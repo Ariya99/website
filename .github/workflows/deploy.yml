@@ -1,0 +1,20 @@
+name: Deploy to CPanel
+
+on:
+  push:
+    branches:
+      - master  # or 'main' depending on your branch
+
+jobs:
+  deploy:
+    runs-on: [self-hosted]  # Your runner is already registered
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Deploy files to CPanel
+      run: |
+        echo "Deploying to CPanel server"
+        ssh cpanel-server "mkdir -p ~/deployments/website"
+        rsync -avz --delete ./ cpanel-server:~/deployments/website/
